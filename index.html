@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gita Daily</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1c1f3a">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif+Devanagari:wght@500&family=Lora:wght@400;500&display=swap">
+<style>
+:root{--bg:#f3efe6;--ink:#1c1f3a;--mute:#5d6078;--line:#d8d2c2;--panel:#fffdf7;--acc:#8a5a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12142a;--ink:#ece8dc;--mute:#a3a6c0;--line:#2c3052;--panel:#1b1e3a;--acc:#e8b54d}}
+:root[data-theme="dark"]{--bg:#12142a;--ink:#ece8dc;--mute:#a3a6c0;--line:#2c3052;--panel:#1b1e3a;--acc:#e8b54d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Lora,Georgia,serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font:700 30px/1.1 "Cormorant Garamond",Georgia,serif;margin:8px 0 2px}
+.sub{color:var(--mute);margin:0 0 18px;font-size:15px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+nav button,.ctl button{font:inherit;font-size:15px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;cursor:pointer}
+nav button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.card{border-radius:18px;padding:34px 24px;color:#f7f1e1;text-align:center;position:relative;overflow:hidden;min-height:300px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.card::before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(255,255,255,.18);right:-80px;top:-80px;box-shadow:0 0 0 28px rgba(255,255,255,.05),0 0 0 60px rgba(255,255,255,.03)}
+.t-karma{background:linear-gradient(160deg,#3b2a6b,#b5532b)}
+.t-soul{background:linear-gradient(160deg,#0f3b4a,#2b7a78)}
+.t-dharma{background:linear-gradient(160deg,#5a1f2e,#c27a2a)}
+.t-self{background:linear-gradient(160deg,#1f3a2a,#7a8f3a)}
+.t-surrender{background:linear-gradient(160deg,#2a2150,#8c4a8a)}
+.art{width:100%;max-width:230px;height:auto;margin:0 auto;position:relative}
+.cap{font-size:13px;opacity:.78;margin:-8px 0 0;position:relative}
+.sa{font:500 21px/1.9 "Noto Serif Devanagari",serif;margin:0;position:relative;opacity:.92}
+.q{font:italic 500 27px/1.3 "Cormorant Garamond",Georgia,serif;margin:0;position:relative}
+.ref{font-size:14px;opacity:.8;margin:0;position:relative}
+.ctl{display:flex;gap:8px;margin:14px 0;flex-wrap:wrap;align-items:center}
+.ctl .grow{flex:1}
+.sec{border-top:1px solid var(--line);padding:14px 0}
+.sec h2{font:700 20px/1.2 "Cormorant Garamond",Georgia,serif;margin:0 0 4px;color:var(--acc)}
+.sec p{margin:0}
+details summary{cursor:pointer;font:700 20px/1.2 "Cormorant Garamond",Georgia,serif;color:var(--acc)}
+details p{margin-top:8px;white-space:pre-line}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.chips button{font:inherit;font-size:14px;padding:5px 12px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:999px;cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.list button{display:block;width:100%;text-align:left;font:inherit;padding:12px 4px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);cursor:pointer}
+.list small{color:var(--mute);display:block}
+.note{color:var(--mute);font-size:14px;margin-top:22px}
+[hidden]{display:none!important}
+.find{display:flex;gap:8px;margin-bottom:12px}.find select,.find input{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);flex:1;min-width:0}.opt{display:block;margin-top:18px;font-size:14px;color:var(--mute)}details p{font-style:italic}#d,#m,#x{font-style:normal}
+</style>
+</head>
+<body>
+<main>
+<h1>Gita Daily</h1>
+<p class="sub" id="count">Loading verses...</p>
+<nav id="modes"></nav>
+<div id="listWrap" hidden><div class="find"><select id="chsel"></select><input id="q" type="search" placeholder="Search or type 2.47"></div><div class="list" id="list"></div></div>
+<div id="view" hidden>
+  <div class="card" id="card"></div>
+  <div class="ctl"><button id="back" hidden>Back to list</button><button id="prev">Previous</button><button id="next">Next</button><span class="grow"></span><button id="save">Save</button><button id="copy">Copy</button></div>
+  <div class="sec"><h2>In plain words</h2><p id="m"></p></div>
+  <div class="sec"><h2>Where it comes from</h2><p id="x"></p></div>
+  <div class="sec"><details><summary>Read it aloud</summary><p id="tr"></p></details></div>
+  <div class="sec" id="deep"><details><summary>The story behind it</summary><p id="d"></p></details></div>
+</div>
+<label class="opt" id="opts"><input type="checkbox" id="ann"> Only show verses with a written meaning</label>
+<p class="note">Sanskrit text and transliteration come from an open, public-domain dataset. Meanings, stories and artwork are original. For personal use.</p>
+</main>
+<script>
+var H='<svg class="art" viewBox="0 0 200 120" role="img" aria-label="';
+var ART={
+krishna:[H+'Krishna with a flute">'+'<path d="M52 120Q100 66 148 120Z" fill="#f0c34e"/><circle cx="100" cy="58" r="29" fill="#5273c9"/><path d="M78 38L85 20L100 31L115 20L122 38Z" fill="#f0c34e"/><ellipse cx="100" cy="12" rx="5" ry="10" fill="#2a9d8f"/><circle cx="100" cy="10" r="2.6" fill="#f0c34e"/><path d="M89 56Q93 53 97 56M103 56Q107 53 111 56M94 68Q100 72 106 68" stroke="#14163a" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="104" y="88" width="72" height="4" rx="2" transform="rotate(-16 104 90)" fill="#d9a441"/></svg>',"Krishna, the teacher"],
+arjuna:[H+'Arjuna with his bow">'+'<path d="M64 120Q100 78 136 120Z" fill="#8a3345"/><circle cx="100" cy="54" r="22" fill="#c9946a"/><path d="M78 50Q100 22 122 50L122 42Q100 16 78 42Z" fill="#2b2350"/><circle cx="100" cy="30" r="3" fill="#f0c34e"/><path d="M92 55h5M103 55h5" stroke="#14163a" stroke-width="2.4" stroke-linecap="round"/><path d="M152 12Q190 60 152 108" stroke="#ecdcae" stroke-width="3.2" fill="none"/><path d="M152 12L152 108" stroke="#ecdcae" stroke-width="1"/></svg>',"Arjuna, the listener"],
+chariot:[H+'Krishna and Arjuna on a chariot">'+'<circle cx="72" cy="92" r="22" fill="none" stroke="#f0c34e" stroke-width="4"/><path d="M72 70V114M50 92H94M56 76L88 108M88 76L56 108" stroke="#f0c34e" stroke-width="2"/><rect x="40" y="62" width="100" height="12" rx="3" fill="#6b3d1f"/><circle cx="82" cy="40" r="10" fill="#5273c9"/><path d="M68 62Q82 44 96 62Z" fill="#f0c34e"/><circle cx="112" cy="42" r="10" fill="#c9946a"/><path d="M99 62Q112 46 125 62Z" fill="#8a3345"/><path d="M140 66L176 62M176 62Q184 50 192 56L186 74Q180 70 176 66" stroke="#ecdcae" stroke-width="3" fill="#ecdcae"/><path d="M140 40V62" stroke="#ecdcae" stroke-width="2"/><path d="M140 40L160 47L140 54Z" fill="#e8734a"/></svg>',"Krishna teaches Arjuna on the chariot"],
+sanjaya:[H+'Sanjaya and King Dhritarashtra seated">'+'<path d="M24 118Q56 78 88 118Z" fill="#e6d6a8"/><circle cx="56" cy="66" r="17" fill="#c9946a"/><path d="M112 118Q144 78 176 118Z" fill="#7a5ca8"/><circle cx="144" cy="66" r="17" fill="#c9946a"/><path d="M130 62h8M150 62h8" stroke="#14163a" stroke-width="2.4" stroke-linecap="round"/><path d="M96 40Q100 20 104 40Q100 52 96 40Z" fill="#f0c34e"/></svg>',"Sanjaya describes the battlefield to the blind king"]
+};
+
+var CH=[["Arjuna's despair","The armies stand ready at Kurukshetra. Arjuna sees his teachers and relatives on both sides and loses heart.","dharma"],
+["The self and the steady mind","Krishna begins to teach: the self does not die, act without clinging to results, and keep a steady mind.","soul"],
+["The path of action","Why action cannot be avoided, and how to act as an offering without selfish attachment.","karma"],
+["Knowledge and action","Krishna explains why he comes into the world and how knowledge and sacrifice purify action.","karma"],
+["Renunciation and action","Giving up action versus acting without attachment. Real renunciation is inner.","karma"],
+["Meditation","How to practise meditation, and how to steady a restless mind.","self"],
+["Knowledge and wisdom","The divine as the source of everything, and the four kinds of seekers.","surrender"],
+["The imperishable","What happens at death, and why remembering the divine at all times matters.","soul"],
+["The royal secret","Devotion as the simplest and highest path.","surrender"],
+["Divine glories","Krishna describes how the divine shows up in the world.","surrender"],
+["The universal form","Arjuna is shown the vast cosmic form and is awed and shaken.","dharma"],
+["Devotion","Paths of devotion and the qualities of a person dear to the divine.","surrender"],
+["The field and the knower","The body as the field, the self as its knower, and what true knowledge is.","soul"],
+["The three gunas","Goodness, passion and inertia, the three qualities that shape mind and action.","self"],
+["The supreme person","The cosmic tree, and the highest reality beyond the changing and the unchanging.","surrender"],
+["Divine and demonic natures","Qualities that lift a person up and qualities that drag them down.","dharma"],
+["Three kinds of faith","Faith, food, worship and giving, each in three kinds.","self"],
+["Liberation through letting go","Krishna sums up the whole teaching. Arjuna's confusion ends.","surrender"]];
+var $=function(i){return document.getElementById(i)};
+var V=[],C={},seq=[],pos=0,mode="daily",opened=false;
+function lsGet(k,d){try{var s=localStorage.getItem(k);return s===null?d:JSON.parse(s)}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var saved=lsGet("gitaSaved",[]),onlyAnn=lsGet("gitaAnn",true);
+function rf(o){return o[0]+"."+o[1]}
+function pool(){var p=onlyAnn?V.filter(function(o){return C[rf(o)]}):V;return p.length?p:V}
+function today(){return Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5)}
+function pick(o){
+  if(o[4]==="K"){var k=Math.random()<.5?"krishna":"chariot";return ART[k]}
+  return o[4]==="A"?ART.arjuna:ART.sanjaya;
+}
+function show(o){
+  var k=rf(o),x=C[k]||{},ch=CH[o[0]-1],a=pick(o);
+  $("card").className="card t-"+(x.t||ch[2]);
+  $("card").innerHTML=a[0]+'<p class="cap">'+a[1]+'</p><p class="sa">'+o[2].replace(/\n/g,"<br>")+'</p>'+(x.q?'<p class="q">'+x.q+'</p>':'')+'<p class="ref">Bhagavad Gita '+k+', '+ch[0]+'</p>';
+  $("m").textContent=x.m||"A plain-English meaning for this verse has not been written yet. Read the chapter context below, or read the verse aloud.";
+  $("x").textContent=x.x||("Chapter "+o[0]+": "+ch[0]+". "+ch[1]);
+  $("tr").innerHTML=o[3].replace(/\n/g,"<br>");
+  $("deep").hidden=!x.d;$("d").textContent=x.d||"";
+  $("save").textContent=saved.indexOf(k)>=0?"Saved":"Save";
+  $("view").hidden=false;
+}
+function go(p){pos=p;show(seq[p]);if(mode==="sequence")lsSet("gitaSeq",rf(seq[p]));nav()}
+function nav(){
+  var step=mode==="sequence"||(mode==="browse"&&opened);
+  $("prev").hidden=!step;$("next").hidden=!(step||mode==="random");
+  $("next").textContent=mode==="random"?"Another verse":"Next";
+  $("back").hidden=!(mode==="browse"&&opened);
+}
+function setMode(m){
+  mode=m;opened=false;
+  [].forEach.call($("modes").children,function(b){b.setAttribute("aria-pressed",b.dataset.m===m)});
+  $("listWrap").hidden=m!=="browse";$("opts").hidden=m==="browse";$("view").hidden=true;
+  var P=pool();$("count").textContent=Object.keys(C).length+" of "+V.length+" verses have written meanings";
+  if(m==="browse"){renderList();return}
+  seq=P;
+  if(m==="daily")go(today()%P.length);
+  else if(m==="random")go(Math.floor(Math.random()*P.length));
+  else{var s=lsGet("gitaSeq",""),p=P.findIndex(function(o){return rf(o)===s});go(p<0?0:p)}
+}
+function renderList(){
+  var q=$("q").value.trim().toLowerCase(),sel=$("chsel").value,items;
+  if(q)items=V.filter(function(o){var x=C[rf(o)]||{};return(rf(o)+" "+o[3]+" "+(x.q||"")+" "+(x.m||"")).toLowerCase().indexOf(q)>=0}).slice(0,60);
+  else if(sel==="saved")items=V.filter(function(o){return saved.indexOf(rf(o))>=0});
+  else items=V.filter(function(o){return o[0]===+sel});
+  var L=$("list");L.innerHTML="";
+  if(!items.length){L.textContent=sel==="saved"&&!q?"Nothing saved yet. Open a verse and tap Save.":"No verses found.";return}
+  items.forEach(function(o){
+    var b=document.createElement("button"),x=C[rf(o)]||{};
+    b.textContent=rf(o)+"  "+(x.q||o[3].split("\n")[0]);
+    b.onclick=function(){opened=true;seq=V;go(V.indexOf(o));$("listWrap").hidden=true;window.scrollTo(0,0)};
+    L.appendChild(b);
+  });
+}
+function init(){
+  [["daily","Daily"],["random","Random"],["sequence","In order"],["browse","Browse all"]].forEach(function(p){
+    var b=document.createElement("button");b.textContent=p[1];b.dataset.m=p[0];b.onclick=function(){setMode(p[0])};$("modes").appendChild(b);
+  });
+  var s=$("chsel");s.innerHTML='<option value="saved">Saved verses</option>';
+  CH.forEach(function(c,i){var o=document.createElement("option");o.value=i+1;o.textContent="Chapter "+(i+1)+": "+c[0];s.appendChild(o)});
+  s.value="1";s.onchange=renderList;$("q").oninput=renderList;
+  $("ann").checked=onlyAnn;$("ann").onchange=function(){onlyAnn=this.checked;lsSet("gitaAnn",onlyAnn);setMode(mode)};
+  $("next").onclick=function(){if(mode==="random")go(Math.floor(Math.random()*seq.length));else go((pos+1)%seq.length)};
+  $("prev").onclick=function(){go((pos-1+seq.length)%seq.length)};
+  $("back").onclick=function(){opened=false;$("view").hidden=true;$("listWrap").hidden=false;nav()};
+  $("save").onclick=function(){var k=rf(seq[pos]),i=saved.indexOf(k);if(i<0)saved.push(k);else saved.splice(i,1);lsSet("gitaSaved",saved);show(seq[pos])};
+  $("copy").onclick=function(){var o=seq[pos],x=C[rf(o)]||{},t=(x.q?"\u201C"+x.q+"\u201D\n":o[3]+"\n")+"Bhagavad Gita "+rf(o)+(x.m?"\n\n"+x.m:"");
+    try{navigator.clipboard.writeText(t);$("copy").textContent="Copied"}catch(e){$("copy").textContent="Not available"}
+    setTimeout(function(){$("copy").textContent="Copy"},1800)};
+  setMode("daily");
+}
+Promise.all([fetch("verses.json").then(function(r){return r.json()}),fetch("content.json").then(function(r){return r.json()})])
+.then(function(r){V=r[0];C=r[1];init()})
+.catch(function(){$("count").textContent="Could not load the verses. Check your connection and reload."});
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+</script>
+</body>
+</html>
